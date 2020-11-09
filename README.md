@@ -4,7 +4,9 @@
 
 ## Tasks
 
-1) **Do:** [Finish Space Battle](https://git.generalassemb.ly/SEIR-Margaret/space-battle)
+1) **Fork and clone** this repository into your `W03D01` directory
 
-2) **Submit:** via GitHub issues using the Space Battle repo. Follow the instructions found in the [wiki](https://git.generalassemb.ly/SEIR-Margaret/class-recordings-and-info/blob/master/submitting-homework.md).
+2) **Do:** [Space Battle](space-battle.md)
+
+3) **Submit:** via GitHub issues using the Space Battle repo. Follow the instructions found in the [wiki](https://git.generalassemb.ly/SEIR-Margaret/class-recordings-and-info/blob/master/submitting-homework.md).
 
