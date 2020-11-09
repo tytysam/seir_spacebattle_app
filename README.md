@@ -4,7 +4,7 @@
 
 ## Tasks
 
-1) **Fork and clone** this repository into your `W03D01` directory
+1) **Fork and clone** this repository into your `W03D02` directory
 
 2) **Do:** [Space Battle](space-battle.md)
 
