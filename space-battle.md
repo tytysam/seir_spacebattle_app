@@ -27,7 +27,7 @@ Your game does not have to be elegant. The only thing that matters is that it wo
 
 #### Build a game of battling alien spaceships using Javascript.
 
-Earth has been attacked by a horde of aliens! You are the captain of the USS Nova, on a mission to destroy every last alien ship.
+Earth has been attacked by a horde of aliens! You are the captain of the USS Margaret, on a mission to destroy every last alien ship.
 
 Battle the aliens as you try to destroy them with your lasers.
 
@@ -60,7 +60,7 @@ A game round would look like this:
  - If the ship's accuracy is `0.8` - then if the number generated from `Math.random()` is less than or equal to `0.8` then the attack will be successful. If the value is greater than  `0.8` then the attack has missed. 
  - Adjust the accuracy based on the specs for each ship
 
-**Your spaceship, the USS Nova** should have the following properties:
+**Your spaceship, the USS Margaret** should have the following properties:
 
 * **hull** - `20`
 * **firepower** - `5`
@@ -93,9 +93,9 @@ Put together an `index.html` and `app.js`.
 
 ## Reminder on how to set up js in Chrome console
 
-### Execute Javascript in a web page
+### Execute JavaScript in a web page
 
-1. Put your javascript in a .js file as normal
+1. Put your javascript in a `.js` file as normal
 1. Reference the file inside a script tag inside the `<head>` tag of your html file
 
     ```javascript
@@ -168,7 +168,7 @@ Keep these five things in mind when planning and coding your game:
 
 1. Begin even simpler than the specifications suggest. In this case, how about we just start with one alien ship instead of many alien ships, and get the code for one ship working first.
 
-2. Root out any 'gotchas' that you really ought to foresee. In this case, will we really want nested loops -- one for a battle, one for iterating over aliens)? How will we exit one loop and then exit the parent loop? Perhaps keeping it to one loop somehow will help us avoid unnecessary difficulties.
+2. Root out any 'gotchas' that you really ought to foresee. In this case, will we really want nested loops -- one for a battle, one for iterating over aliens? How will we exit one loop and then exit the parent loop? Perhaps keeping it to one loop somehow will help us avoid unnecessary difficulties.
 
 3. When coding, form a solid and testable foundation before building upon it with more functionality. In this case, is there a bug where an alien can attack _after_ it has been destroyed? Better fix that bug before increasing the complexity of the code.
 
@@ -239,17 +239,17 @@ Your code should be as coherent to another developer as possible.
 <summary>Click the carrot on the left to expand the cheat codes section</summary>
 <hr>
 
-- Make the USS_Nova object.
+- Make the USS_Margaret object.
 - Make a single alien ship object.
 - Simulate a battle between your ship and a single alien ship first.
-- Make a method for the USS Nova that will attack a given target. The target can be an input to the method.
+- Make a method for the USS Margaret that will attack a given target. The target can be an input to the method.
 - Run the method and pass it the alien ship.
-- Make it so the method reduces the target's hull by the firepower of the USS Schwarz.
+- Make it so the method reduces the target's hull by the firepower of the USS Margaret.
 
 <hr>
 
 - Make a game object
-- Make a method in the game object that will run a 'check win' for the health of the alien(s) and/or the USS Nova. If the hull is 0 or less, display a message that the ship went kabloo-ey.
+- Make a method in the game object that will run a 'check win' for the health of the alien(s) and/or the USS Margaret. If the hull is 0 or less, display a message that the ship went kabloo-ey.
 - Make it so the alien will only be hit if a Math.random call is below the accuracy threshold.
 - Make a method for the alien ship to attack a target.
 - Add a status console log for the end of the round.
