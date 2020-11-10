@@ -2,46 +2,50 @@
 // SPACE BATTLE
 // =================
 
+// =======================================================================================
+
+// ============================
+// PSEUDOCODE + PLANNING
+// ============================
+
+// WHILE (you still have HP)
+
+// 6 Alien ships to beat
 //
-// SAMPLE GAME ROUND LOGIC - PSEUDO
 
-// PLAYER ATTACKS
+// SAMPLE BATTLE
+//// PLAYER attacks.
+//// IF Enemy HP ≠ 0
+////// THEN Enemy attacks
+//// IF Player HP ≠ 0
+////// THEN we attack again
+//// (continue until someone runs out of HP)
+//
 
-// IF ENEMY HIT POINTS are = 0
-//// == THEN we have option to RETREAT or ATTACK THE NEXT SHIP
-// ELSE ENEMY HP is > 0
-//// == THEN ENEMY ATTACKS our ship
-//// ==  == IF we survive, we ATTACK again.
+// 6 Reps of the Above until you WIN
+// After each battle, you can either Attack again OR Retreat.
+//
+// END (YOU WIN ... OR ... You run out of HP)
 
+//
 // SEE --> Landscaper game for reference to alerts + propmts + passing user input
 
+// ==========================
+// CIRCLE-BACK TO DO LIST:
+// ==========================
+// • Build-out Retreat() function further
+// • Add more methods to each Ship (missles to mine, targeting to mine, repair function to mine, ...)
+// • New Game function (aka, a reset parameters function)
+// •
+// •
+// •
 //
-// CLASS CONSTRUCTOR LOGIC
 
-// Two Classes
-// == Our Ship
-// == Enemy Ship(s)
-////  ==  Extend this class if we want to get crazy creative
-////  ==  Enemy has ranged properties... We can use individual arrays for each
-////  ==  property ( I think ) in order to randomly select those properties. SEE --> Barbie Mini Game
+// =======================================================================================
 
-//===============================================================================
-
-// Let's start with our class constructors...
-
-// No clear reason to use a class constructor for my own ship at the moment...
-// There is only one instance, so mind as well use an object literal..
-
-// class PlayerShip {
-//   constructor(name) {
-//     this.name = name;
-//     this.hull = 20;
-//     this.firepower = 5;
-//     this.accuracy = 0.7;
-//   }
-// }
-
-// const ussNova = new PlayerShip('USS Nova');
+// ===============
+// GAME SETUP
+// ===============
 
 // Randomization Helper Function
 const randomize = (limit) => {
@@ -50,10 +54,37 @@ const randomize = (limit) => {
 
 // Blueprint for EnemyShips
 class EnemyShip {
-  constructor(hull, firepower, accuracy) {
+  constructor(hull, firepower, accuracy, id) {
     this.hull = hull;
     this.firepower = firepower;
     this.accuracy = accuracy;
+    this.id = id;
+  }
+  attack(ussNova) {
+    if (Math.random() <= this.accuracy) {
+      ussNova.hull -= this.firepower;
+      if (ussNova.hull <= 0) {
+        ussNova.hull = 0;
+        console.log("Our ship has been destroyed — your watch has ended.");
+      } else if (ussNova.hull > 0 && ussNova.hull < 6) {
+        console.log(
+          `Direct hit! Our hull is in critical shape – we only have ${ussNova.hull} hit-point(s) remaining!`
+        );
+      } else if (ussNova.hull > 6 && ussNova.hull < 14) {
+        console.log(
+          `They got us again! I don't know how many more hits like that we can take – our hull only has ${ussNova.hull} hit-points remaining!`
+        );
+      } else if (ussNova.hull > 14) {
+        console.log(
+          `We've been hit! Our hull has ${ussNova.hull} hit-point(s) remaining!`
+        );
+      }
+    } else {
+      console.log(`The alien's lasers barely missed us!`);
+    }
+  }
+  reportHealth() {
+    console.log(`Alien hull has ${this.hull} hit-point(s) remaining!`);
   }
 }
 
@@ -66,7 +97,7 @@ const alienFirepowerValues = [2, 3, 4];
 const alienAccuracyValues = [0.6, 0.65, 0.7, 0.75, 0.8];
 
 // Use this loop to randomly create alien ships with randomized values for hull, firepower, and accuracy.
-for (let i = 6; i > 0; i--) {
+for (let i = 0; i < 6; i++) {
   // Randomly select an alien *hull value*
   const hullValue = alienHullValues[randomize(alienHullValues.length)];
   // Randomly select an alien *firepower value*
@@ -75,8 +106,12 @@ for (let i = 6; i > 0; i--) {
   // Randomly select an alien *accuracy value*
   const accuracyValue =
     alienAccuracyValues[randomize(alienAccuracyValues.length)];
-  // Create 6 ships and push them into our alienShips array.
-  alienShips.push(new EnemyShip(hullValue, firepowerValue, accuracyValue));
+  //Create a unique ID for each alienShip. Will help with keeping them straight.
+  const idValue = `Neimoidian-Destroyer-0${i + 1}`;
+  // Create 6 ships and unshift them into our alienShips array. Using unshift so that our IDs are in order.
+  alienShips.push(
+    new EnemyShip(hullValue, firepowerValue, accuracyValue, idValue)
+  );
 }
 
 // Initialize the USS Nova object. AKA --> Our Ship.
@@ -85,4 +120,43 @@ const ussNova = {
   hull: 20,
   firepower: 5,
   accuracy: 0.7,
+  // **An eye to the future: if we want to give ourselves mutliple weapons, missles could live
+  // ~here as an array with "6 missles" in it, and we could pop one out every time we use one.
+  // Just a thought in case I want to add more functionality/go for the bonus objectives.
+  attack(alienShip) {
+    if (Math.random() <= ussNova.accuracy) {
+      alienShip.hull -= ussNova.firepower;
+      if (alienShip.hull <= 0) {
+        alienShip.hull = 0;
+        console.log(
+          `Direct hit on ${alienShip.id}! Their hull has ${alienShip.hull} hit-points remaining and has been destroyed!`
+        );
+        shipIndex++;
+      } else if (alienShip.hull > 0) {
+        console.log(
+          `Direct hit on ${alienShip.id}! Their hull has ${alienShip.hull} hit-points remaining!`
+        );
+      }
+    } else {
+      console.log(`Our lasers barely missed!`);
+    }
+  },
+  retreat() {
+    console.log("Better to live another day..");
+  },
 };
+
+// =======================================================================================
+
+// =============================
+// Game Logic
+// =============================
+
+let shipIndex = 0;
+let currentTarget = alienShips[shipIndex];
+
+alienShips[0].attack(ussNova);
+alienShips[0].attack(ussNova);
+alienShips[0].attack(ussNova);
+alienShips[0].attack(ussNova);
+alienShips[0].attack(ussNova);
