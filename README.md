@@ -8,5 +8,5 @@
 
 2) **Do:** [Space Battle](space-battle.md)
 
-3) **Submit:** via GitHub issues using the Space Battle repo. Follow the instructions found in the [wiki](https://git.generalassemb.ly/SEIR-Margaret/class-recordings-and-info/blob/master/submitting-homework.md).
+3) **Submit:** via GitHub issues. Follow the instructions found in the [wiki](https://git.generalassemb.ly/SEIR-Margaret/class-recordings-and-info/blob/master/submitting-homework.md).
 
