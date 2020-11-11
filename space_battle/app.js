@@ -27,8 +27,7 @@
 // END (YOU WIN ... OR ... You run out of HP)
 
 //
-// SEE --> Landscaper game for reference to alerts + propmts + passing user input
-
+//
 // ==========================
 // CIRCLE-BACK-TO LIST:
 // ==========================
@@ -38,7 +37,7 @@
 // • New Game function (aka, a reset parameters function)
 // •
 // •
-//
+// •
 
 // =======================================================================================
 
@@ -140,8 +139,7 @@ const ussNova = {
     }
   },
   retreat() {
-    // How exactly do I reset EVERYTHING for a new game...?
-    console.log("Better to live another day..");
+    action = "stop";
     document.location.href = "";
   },
   reportHealth() {
@@ -175,21 +173,17 @@ while (action !== "stop") {
       currentTarget.attack(ussNova);
     }
     if (currentTarget.hull <= 0) {
-      console.log("Victory! You defeated the Neimoidian ship!");
+      console.log("Victory! You defeated the Neimoidian destroyer!");
       shipIndex++;
       if (alienShips[shipIndex]) {
         currentTarget = alienShips[shipIndex];
-        console.log("Another Neimoidian ship has been spotted in the sector!");
+        console.log("Another alien ship has been spotted in the sector!");
       } else {
         console.log(
           "That was the last ship in the sector! You have brought glory to our people."
         );
         break;
       }
-      prompt(
-        "Captain, shall we continue fighting, or retreat before the next battle?",
-        "..."
-      );
     }
     if (ussNova.hull <= 0) {
       console.log(
