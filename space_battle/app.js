@@ -11,14 +11,13 @@
 // WHILE (you still have HP)
 
 // 6 Alien ships to beat
-//
 
 // SAMPLE BATTLE
 //// PLAYER attacks.
 //// IF Enemy HP ≠ 0
-////// THEN Enemy attacks
+////// --> THEN Enemy attacks
 //// IF Player HP ≠ 0
-////// THEN we attack again
+////// --> THEN we attack again
 //// (continue until someone runs out of HP)
 //
 
@@ -31,12 +30,12 @@
 // SEE --> Landscaper game for reference to alerts + propmts + passing user input
 
 // ==========================
-// CIRCLE-BACK TO DO LIST:
+// CIRCLE-BACK-TO LIST:
 // ==========================
+// • Circle back to the if statements within
 // • Build-out Retreat() function further
 // • Add more methods to each Ship (missles to mine, targeting to mine, repair function to mine, ...)
 // • New Game function (aka, a reset parameters function)
-// •
 // •
 // •
 //
@@ -65,18 +64,18 @@ class EnemyShip {
       ussNova.hull -= this.firepower;
       if (ussNova.hull <= 0) {
         ussNova.hull = 0;
-        console.log("Our ship has been destroyed — your watch has ended.");
+        console.log("The USS Nova has been destroyed — your watch has ended.");
       } else if (ussNova.hull > 0 && ussNova.hull < 6) {
         console.log(
-          `Direct hit! Our hull is in critical shape – we only have ${ussNova.hull} hit-point(s) remaining!`
+          `Direct hit! The Nova's hull is in critical condition – we only have ${ussNova.hull} hit-point(s) remaining!`
         );
       } else if (ussNova.hull > 6 && ussNova.hull < 14) {
         console.log(
-          `They got us again! I don't know how many more hits like that we can take – our hull only has ${ussNova.hull} hit-points remaining!`
+          `They got us again! I don't know how many more hits like that the Nova can take – our hull only has ${ussNova.hull} hit-points remaining!`
         );
       } else if (ussNova.hull > 14) {
         console.log(
-          `We've been hit! Our hull has ${ussNova.hull} hit-point(s) remaining!`
+          `We've been hit! The Nova's hull has ${ussNova.hull} hit-point(s) remaining!`
         );
       }
     } else {
@@ -84,7 +83,7 @@ class EnemyShip {
     }
   }
   reportHealth() {
-    console.log(`Alien hull has ${this.hull} hit-point(s) remaining!`);
+    console.log(`${this.id}'s hull has ${this.hull} hit-point(s) remaining!`);
   }
 }
 
@@ -131,7 +130,6 @@ const ussNova = {
         console.log(
           `Direct hit on ${alienShip.id}! Their hull has ${alienShip.hull} hit-points remaining and has been destroyed!`
         );
-        shipIndex++;
       } else if (alienShip.hull > 0) {
         console.log(
           `Direct hit on ${alienShip.id}! Their hull has ${alienShip.hull} hit-points remaining!`
@@ -142,7 +140,12 @@ const ussNova = {
     }
   },
   retreat() {
+    // How exactly do I reset EVERYTHING for a new game...?
     console.log("Better to live another day..");
+    document.location.href = "";
+  },
+  reportHealth() {
+    console.log(`The Nova's hull has ${ussNova.hull} hit-point(s) remaining!`);
   },
 };
 
@@ -152,11 +155,59 @@ const ussNova = {
 // Game Logic
 // =============================
 
+// Global Variables
 let shipIndex = 0;
 let currentTarget = alienShips[shipIndex];
+let action = null;
 
-alienShips[0].attack(ussNova);
-alienShips[0].attack(ussNova);
-alienShips[0].attack(ussNova);
-alienShips[0].attack(ussNova);
-alienShips[0].attack(ussNova);
+// Gameplay Function
+while (action !== "stop") {
+  action = prompt(
+    "Enter 'attack' to fire your lasers at the enemy ship, 'retreat' to run and live to fight another day, 'health' to check the hit-points of the USS Nova and your current enemy, or 'stop' to end the game.",
+    "What would you like to do?"
+  );
+  if (action === "attack") {
+    while (ussNova.hull > 0 && currentTarget.hull > 0) {
+      ussNova.attack(currentTarget);
+      if (currentTarget.hull <= 0) {
+        break;
+      }
+      currentTarget.attack(ussNova);
+    }
+    if (currentTarget.hull <= 0) {
+      console.log("Victory! You defeated the Neimoidian ship!");
+      shipIndex++;
+      if (alienShips[shipIndex]) {
+        currentTarget = alienShips[shipIndex];
+        console.log("Another Neimoidian ship has been spotted in the sector!");
+      } else {
+        console.log(
+          "That was the last ship in the sector! You have brought glory to our people."
+        );
+        break;
+      }
+      prompt(
+        "Captain, shall we continue fighting, or retreat before the next battle?",
+        "..."
+      );
+    }
+    if (ussNova.hull <= 0) {
+      console.log(
+        "The USS Nova has been destroyed! All hope for humanity has been lost..."
+      );
+      break;
+    }
+  } else if (action === "retreat") {
+    ussNova.retreat();
+  } else if (action === "health") {
+    currentTarget.reportHealth();
+    ussNova.reportHealth();
+  } else if (
+    action !== "attack" &&
+    action !== "retreat" &&
+    action !== "health" &&
+    action !== "stop"
+  ) {
+    console.log("Command not recognized. Please use a valid command.");
+  }
+}
