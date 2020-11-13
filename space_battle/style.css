@@ -1,0 +1,61 @@
+body {
+  background-color: aliceblue;
+  font-size: 10px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 90px;
+  padding: 5px;
+  margin: 25px 0 200px 0;
+}
+
+.welcome-modal.closed {
+  display: none;
+}
+
+.welcome-modal {
+  background-color: #f9d2c5;
+  padding: 30px;
+  width: 50vw;
+  min-width: 450px;
+  text-align: center;
+  border-radius: 8px;
+  position: fixed;
+  top: 55%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: block;
+}
+.flex-container {
+  position: relative;
+  text-align: center;
+}
+
+.controls {
+  align-items: center;
+}
+
+.controls button {
+  color: #ffffff;
+  background-color: #000000;
+  border-radius: 4px;
+  width: 15%;
+  margin: 0px 10px 0px 20px;
+  padding: 25px;
+}
+
+.rules {
+  font-size: 1.5rem;
+}
+
+.get-started {
+  color: #ffffff;
+  font-size: 1.25rem;
+  background-color: #000000;
+  border-radius: 4px;
+  width: 35%;
+  height: 50px;
+}
