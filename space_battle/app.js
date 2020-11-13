@@ -4,39 +4,14 @@
 
 // =======================================================================================
 
-// ============================
-// PSEUDOCODE + PLANNING
-// ============================
-
-// WHILE (you still have HP)
-
-// 6 Alien ships to beat
-
-// SAMPLE BATTLE
-//// PLAYER attacks.
-//// IF Enemy HP ≠ 0
-////// --> THEN Enemy attacks
-//// IF Player HP ≠ 0
-////// --> THEN we attack again
-//// (continue until someone runs out of HP)
-//
-
-// 6 Reps of the Above until you WIN
-// After each battle, you can either Attack again OR Retreat.
-//
-// END (YOU WIN ... OR ... You run out of HP)
-
-//
-//
 // ==========================
 // CIRCLE-BACK-TO LIST:
 // ==========================
-// • Circle back to the if statements within
+// • Circle back to the if statements within game logic
 // • Build-out Retreat() function further
-// • Add more methods to each Ship (missles to mine, targeting to mine, repair function to mine, ...)
-// • New Game function (aka, a reset parameters function)
-// •
-// •
+// • Add more methods to each Ship (missles to mine, targeting to mine, repair function to mine, missles/other weapon to alien...)
+// • Additional lives?
+// • Add in a final boss? Mothership?
 // •
 
 // =======================================================================================
@@ -207,7 +182,7 @@
 //   }
 // }
 
-// ========================================================
+// ================================================================================================================
 // Knowing what we know from the code review today, let's *gasp* start from
 //scratch and see what we can come up with...
 
@@ -237,16 +212,8 @@ const randomAlienAccuracyValue = () => (Math.floor(Math.random() * 3) + 6) / 10;
 // Function to randomly determine outcome of Player Heal
 const randomHealValue = () => Math.floor(Math.random() * 3) + 3; // Make a random # between 2 & 5
 
-// Function to determine if shot hits the enemy
-const checkIfHit = (ship) => {
-  if (Math.random() < ship.accuracy) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-// Number of Aliens
+// // Array that we will fill with our individual Alien Ship Objects created via Class Constructor.
+let alienShips = [];
 
 // Array used to propagate alien ship with a pilot/name
 const alienPilotNames = [
@@ -300,24 +267,24 @@ class EnemyShip {
   Alien attack function. Targets the USS Nova every time. Open interaction by having Alien Pilot talk.
   Series of different console.logs based on how much damage THE USS NOVA has sustained. 
   */
-  attack(ussNova) {
+  attack(heroShip) {
     this.talkIsh();
     if (checkIfHit(this) === true) {
-      ussNova.hull -= this.firepower;
-      if (ussNova.hull <= 0) {
-        ussNova.hull = 0;
-        console.log("The USS Nova has been destroyed — your watch has ended.");
-      } else if (ussNova.hull > 0 && ussNova.hull < 6) {
+      heroShip.hull -= this.firepower;
+      if (heroShip.hull <= 0) {
+        heroShip.hull = 0;
+        console.log(`The Nova has been destroyed — your watch has ended.`);
+      } else if (heroShip.hull > 0 && heroShip.hull < 6) {
         console.log(
-          `Direct hit! Shields down by ${this.firepower} points. The Nova's hull is in critical condition – we only have ${ussNova.hull} hit-point(s) remaining!`
+          `Direct hit! Shields down by ${this.firepower} points. The Nova's hull is in critical condition – we only have ${heroShip.hull} hit-point(s) remaining!`
         );
-      } else if (ussNova.hull > 6 && ussNova.hull < 14) {
+      } else if (heroShip.hull > 6 && heroShip.hull < 14) {
         console.log(
-          `They got us again! We took ${this.firepower} damage! I don't know how many more hits like that the Nova can take – our hull only has ${ussNova.hull} hit-points remaining!`
+          `They got us again! We took ${this.firepower} damage! I don't know how many more hits like that the Nova can take – our hull only has ${heroShip.hull} hit-points remaining!`
         );
-      } else if (ussNova.hull > 14) {
+      } else if (heroShip.hull > 14) {
         console.log(
-          `We've been hit for ${this.firepower} damage! The Nova's hull has ${ussNova.hull} hit-points remaining!`
+          `We've been hit for ${this.firepower} damage! The Nova's hull has ${heroShip.hull} hit-points remaining!`
         );
       }
     } else {
@@ -335,6 +302,8 @@ class EnemyShip {
   }
 }
 
+// Class constructor for Hero ship.
+// Default hull value of 20, default accuracy value of 70%, default firepower of 5.
 class HeroShip {
   constructor(name, hull = 20, accuracy = 0.7) {
     this.name = name;
@@ -348,7 +317,7 @@ class HeroShip {
   */
   attack(alienShip) {
     if (checkIfHit(this) === true) {
-      alienShip.hull -= ussNova.firepower;
+      alienShip.hull -= heroShip.firepower;
       if (alienShip.hull <= 0) {
         alienShip.hull = 0;
         console.log(
@@ -378,12 +347,22 @@ class HeroShip {
         `Eureka! Our shields have been successfully repaired by ${healAmount}`
       );
     } else {
-      console.log("Did you hear that? I think our ");
+      console.log(
+        "Did you hear that? I think one of our repair droid's just got clipped by a passing asteroid. No healing this round."
+      );
     }
   }
 
+  /*
+  Retreat function.
+  What variables would need reset in order to restart the game???
+  */
   retreat() {
-    document.location.href = "";
+    alienShips = [];
+    shipIndex = 0;
+
+    createHeroShip();
+    createAlienFleet();
   }
 
   /*
@@ -394,12 +373,82 @@ class HeroShip {
   }
 }
 
-// // Array that we will fill with our individual Alien Ship Objects created via Class Constructor.
-const alienShips = [];
+// ================================================================================================================
 
-// Use this loop to randomly create alien ships with randomized Pilot Names
-for (let i = 0; i < 6; i++) {
-  const pilotName =
-    alienPilotNames[Math.floor(Math.random * alienPilotNames.length)]; // Randomly select an alien pilot name from alienPilotNames array
-  alienShips.push(new EnemyShip(pilotName)); // Create 6 ships and push them into our alienShips array
-}
+// =============================
+//  GAME LOGIC
+// =============================
+
+// Overall run-game function.
+const startGame = () => {
+  createHeroShip();
+  createAlienFleet();
+};
+
+const attackEnemy = () => {
+  if (currentTarget.hull > 0) {
+    heroShip.attack(currentTarget);
+    currentTarget.attack(heroShip);
+    battleLossCheck();
+  } else if (currentTarget.hull <= 0) {
+    console.log("Victory! You defeated the Neimoidian destroyer!");
+    shipIndex++;
+    if (alienShips[shipIndex]) {
+      currentTarget = alienShips[shipIndex];
+      console.log("Another alien ship has been spotted in the sector!");
+    } else {
+      console.log(
+        "That was the last ship in the sector! You have brought glory to our people."
+      );
+    }
+  }
+};
+
+const healSelf = () => {
+  heroShip.repairShields();
+  currentTarget.attack(heroShip);
+  battleLossCheck();
+};
+
+// Check to make sure we haven't lost before it is our turn again!
+const battleLossCheck = (heroShip) => {
+  if (heroShip.hull <= 0) {
+    alert(`The ${ussNova.name} has been lost. Your watch has ended.`);
+  } else {
+    console.log("It's our turn again, Captain. What shall we do?");
+  }
+};
+
+// Helper function that will allow us to start on-click + reset the game with a new Hero.
+const createHeroShip = (heroShip) => {
+  let heroShip = new HeroShip("USS Nova");
+};
+
+// Helper function that will allow us to start on-click + reset the game with new Aliens.
+const createAlienFleet = () => {
+  // Use this loop to randomly create alien ships with randomized Pilot Names
+  for (let i = 0; i < 6; i++) {
+    const pilotName =
+      alienPilotNames[Math.floor(Math.random * alienPilotNames.length)]; // Randomly select an alien pilot name from alienPilotNames array
+    alienShips.push(new EnemyShip(pilotName)); // Create 6 ships and push them into our alienShips array
+  }
+};
+
+// Function to determine if shot hits the enemy
+const checkIfHit = (ship) => {
+  if (Math.random() < ship.accuracy) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// ================================================================================================================
+
+// =============================
+//  EVENT LISTENERS
+// =============================
+fightButton.addEventListener("click", attackEnemy);
+healButton.addEventListener("click", healSelf);
+startButton.addEventListener("click", startGame);
+welcomeModal.addEventListener("click");
