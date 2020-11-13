@@ -58,6 +58,7 @@ class EnemyShip {
     this.accuracy = accuracy;
     this.id = id;
   }
+
   attack(ussNova) {
     if (Math.random() <= this.accuracy) {
       ussNova.hull -= this.firepower;
@@ -205,3 +206,15 @@ while (action !== "stop") {
     console.log("Command not recognized. Please use a valid command.");
   }
 }
+
+// ========================================================
+// Knowing what we know from the code review today, let's *gasp* start from
+//scratch and see what we can come up with...
+
+// ====================
+// CACHED DOM NODES
+// ====================
+
+// =======================
+// GLOBAL FUNCTIONS
+// =======================

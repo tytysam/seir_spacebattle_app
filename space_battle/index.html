@@ -4,7 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SPACE BATTLE 3000</title>
+    <link rel="stylesheet" href="style.css" />
     <script defer src="app.js"></script>
   </head>
-  <body></body>
+  <body>
+    <!-- Space Battle Home-->
+    <section id="space-battle-home">
+      <!-- Space Battle Div-->
+      <div class="control-panel flex-container">
+        <div class="controls">
+          <button class="fight">Fight</button>
+          <button class="heal">Heal</button>
+          <button class="retreat">Retreat</button>
+        </div>
+        <div class="alien-ship-stats">
+          <div class="alien-hull btn">Alien Hull: <span>0</span></div>
+          <div class="alien-power btn">Alien Power: <span>0</span></div>
+          <div class="alien-accuracy btn">Alien Accuracy: <span>0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal">
+      <h2>Welcome to Space Battle 3000!</h2>
+      <button class="get-started">Start Blasting!</button>
+    </div>
+  </body>
 </html>
