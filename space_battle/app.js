@@ -14,6 +14,14 @@
 // • Add in a final boss? Mothership?
 // •
 
+// TO FIX
+// * REMOVE YOUR RANDOMIZATION VARIABLE. GO HARD-CODE THE RANDOM VALUES INSTEAD.
+// IT'S THROWING ISSUES FOR WHATEVER REASON
+// * TRANSITION AWAY FROM BEING A CONSOLE-BASED GAME! CAN DYNAMICALLY ADD TEXT/MESSAGES
+// TO A DIV OR SOMETHING IN OUR HTML, THAT WAY EVERYTHING WILL PRINT THERE!! :)
+
+// * GAME IS WORKINGGGGG :))) BUT NOW GO BACK AND FIX SOME LOGIC ISSUES (move around some functions and console.logs, maybe add some alerts)
+
 // =======================================================================================
 
 // =======================================================================================
@@ -39,18 +47,23 @@ const toggleModal = () => {
   welcomeModal.classList.add("closed");
 };
 
-// Randomization function. Built to work toward DRY code.
-const randomization = (limit) => {
-  return Math.floor(Math.random() * limit);
-};
+// **** DEPRECATED ****
+// randomization was throwing some funky issues, so coded values inline instead.
+
+//
+
+// // Randomization function. Built to work toward DRY code.
+// const randomization = (limit) => {
+//   Math.floor(Math.random() * limit);
+// };
 
 // Functions to randomly determine attributes of alien ships
-let randomAlienHullValue = () => randomization(4) + 3; // Make a random # between 3 & 6
-let randomAlienPowerValue = () => randomization(3) + 2; // Make a random # between 2 & 4
-let randomAlienAccuracyValue = () => (randomization(3) + 6) / 10; // Make a random # between .6 and .8
+let randomAlienHullValue = () => Math.floor(Math.random() * 5) + 3; // Make a random # between 4 & 7
+let randomAlienPowerValue = () => Math.floor(Math.random() * 3) + 2; // Make a random # between 2 & 4
+let randomAlienAccuracyValue = () => (Math.floor(Math.random() * 3) + 6) / 10; // Make a random # between .6 and .8
 
 // Function to randomly determine outcome of Player Heal
-let randomHealValue = () => randomization(3) + 3; // Make a random # between 2 & 5
+let randomHealValue = () => Math.floor(Math.random() * 3) + 3; // Make a random # between 2 & 5
 
 // Array used to propagate alien ship with a pilot/name
 const alienPilotNames = [
@@ -76,18 +89,18 @@ const alienPilotNames = [
 // values for Hull, Firepower, Accuracy, and Pilot.
 class EnemyShip {
   constructor(pilot) {
-    this.hull = randomAlienHullValue;
-    this.firepower = randomAlienPowerValue;
-    this.accuracy = randomAlienAccuracyValue;
+    this.hull = randomAlienHullValue();
+    this.firepower = randomAlienPowerValue();
+    this.accuracy = randomAlienAccuracyValue();
     this.pilot = pilot;
     this.catchPhrases = [
-      "–Did someone say probes??",
-      "The Nova stands No-ta chance!",
-      "–Lasers charged to power-level 3000! Prepare to fire!",
-      "–You stand no chance against the Galactic Republic!",
-      "–You should've retreated when you had the chance..",
-      "–The human race doesn't stand a chance against the great Neimoidian army!",
-      "–Radio King Jar Jar — victory is but moments away.",
+      '– "Did someone say probes??" ',
+      '– "The Nova stands No-ta chance!" ',
+      '– "Lasers charged to power-level 3000! Prepare to fire!" ',
+      '– "You stand no chance against the Galactic Republic!" ',
+      `– "You should've retreated when you had the chance.." `,
+      `– "The human race doesn't stand a chance against the great Neimoidian army!" `,
+      '– "Radio King Jar Jar — victory is but moments away." ',
     ];
   }
   /*
@@ -95,7 +108,9 @@ class EnemyShip {
   Add some personality to the game!
   */
   talkIsh() {
-    let ish = this.catchPhrases[randomization(this.catchPhrases.length)];
+    let ish = this.catchPhrases[
+      Math.floor(Math.random() * this.catchPhrases.length)
+    ];
     console.log(this.pilot + " says " + ish);
   }
 
@@ -103,7 +118,7 @@ class EnemyShip {
   Alien attack function. Targets the USS Nova every time. Open interaction by having Alien Pilot talk.
   Series of different console.logs based on how much damage THE USS NOVA has sustained. 
   */
-  attack(ussNova) {
+  attack() {
     this.talkIsh();
     if (checkIfHit(this) === true) {
       ussNova.hull -= this.firepower;
@@ -146,18 +161,17 @@ let alienShips = [];
 Initializer for our 6 Alien Space Ships
 */
 for (let i = 0; i < 6; i++) {
-  let pilotName = alienPilotNames[randomization(alienPilotNames.length)]; // Randomly select an alien pilot name from alienPilotNames array
+  let pilotName =
+    alienPilotNames[Math.floor(Math.random() * alienPilotNames.length)]; // Randomly select an alien pilot name from alienPilotNames array
   alienShips.push(new EnemyShip(pilotName)); // Create 6 ships and push them into our alienShips array
 }
-console.log(alienShips);
+
 // Together, shipIndex + currentTarget form our alien targeting system.
 // shipIndex will iterate every time we destroy an alien ship, until we outgrow our array.
-const shipIndex = 0;
-const currentTarget = alienShips[shipIndex];
+let shipIndex = 0;
+let currentTarget = alienShips[shipIndex];
 
 // ================================================================================================================================
-
-console.log(currentTarget.pilot);
 
 // Object literal for Hero ship.
 // Was having issues getting the game to work with a class constructor for just
@@ -172,7 +186,7 @@ const ussNova = {
   /*
   Attack function for the USS Nova
   */
-  attack(currentTarget) {
+  attack() {
     if (checkIfHit(this) === true) {
       currentTarget.hull -= ussNova.firepower;
       if (currentTarget.hull <= 0) {
@@ -197,8 +211,8 @@ const ussNova = {
   ~80% chance that you are successfully able to heal between 2 - 5 HP 
   */
   repairShields() {
-    if (Math.floor(randomization(9)) / 10 <= this.accuracy) {
-      let healAmount = randomHealValue;
+    if (Math.floor(Math.floor(Math.random() * 9)) / 10 <= this.accuracy) {
+      let healAmount = randomHealValue();
       this.hull += healAmount;
       console.log(
         `Eureka! Our shields have been successfully repaired by ${healAmount}`
@@ -232,20 +246,23 @@ const ussNova = {
 // =============================
 
 // Overall run-game function.
-// const startGame = () => {
-//   toggleModal();
-//   // Below two functions are deprecated for now. May return to try attempt
-//   // reconfiguring. If I can get the below functions to cooperate, I can
-//   // also easily include a retreat/reset game function.
+const startGame = () => {
+  toggleModal();
+  console.log(
+    `So it begins! You can choose to fight, flee, or attempt to heal.`
+  );
+  //   // Below two functions are deprecated for now. May return to try attempt
+  //   // reconfiguring. If I can get the below functions to cooperate, I can
+  //   // also easily include a retreat/reset game function.
 
-//   // createHeroShip();
-//   // createAlienFleet();
-// };
+  //   // createHeroShip();
+  //   // createAlienFleet();
+};
 
-const attackEnemy = (currentTarget) => {
+const attackEnemy = () => {
   if (currentTarget.hull > 0) {
-    ussNova.attack(currentTarget);
-    battleLossCheck(ussNova);
+    ussNova.attack();
+    battleLossCheck();
   } else if (currentTarget.hull <= 0) {
     console.log("Victory! You defeated the Neimoidian destroyer!");
     shipIndex++;
@@ -260,16 +277,18 @@ const attackEnemy = (currentTarget) => {
   }
 };
 
-const healSelf = (currentTarget) => {
+const healSelf = () => {
   ussNova.repairShields();
-  alienShips[0].attack(ussNova);
-  battleLossCheck(ussNova);
+  battleLossCheck();
 };
 
 // Check to make sure we haven't lost before it is our turn again!
-const battleLossCheck = (ussNova) => {
-  if (ussNova.hull <= 0) {
-    alert(`The ${ussNova.name} has been lost. Your watch has ended.`);
+const battleLossCheck = () => {
+  if (currentTarget.hull > 0) {
+    alienShips[0].attack(ussNova);
+    if (ussNova.hull <= 0) {
+      alert(`The ${ussNova.name} has been lost. Your watch has ended.`);
+    }
   } else {
     console.log("It's our turn again, Captain. What shall we do?");
   }
@@ -299,10 +318,6 @@ const checkIfHit = (ship) => {
   }
 };
 
-const testFunc = () => {
-  console.log("The button is not the issue!");
-};
-
 // ================================================================================================================
 
 // =============================
@@ -310,4 +325,4 @@ const testFunc = () => {
 // =============================
 fightButton.addEventListener("click", attackEnemy);
 healButton.addEventListener("click", healSelf);
-startButton.addEventListener("click", toggleModal);
+startButton.addEventListener("click", startGame);
