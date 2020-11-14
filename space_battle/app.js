@@ -15,10 +15,12 @@
 // •
 
 // TO FIX
-// * REMOVE YOUR RANDOMIZATION VARIABLE. GO HARD-CODE THE RANDOM VALUES INSTEAD.
-// IT'S THROWING ISSUES FOR WHATEVER REASON
+
 // * TRANSITION AWAY FROM BEING A CONSOLE-BASED GAME! CAN DYNAMICALLY ADD TEXT/MESSAGES
 // TO A DIV OR SOMETHING IN OUR HTML, THAT WAY EVERYTHING WILL PRINT THERE!! :)
+
+// * Add the stats for both OUR ship + the current ALIEN ship that will be dynamically
+// updated as Aliens swap out between battles
 
 // * GAME IS WORKINGGGGG :))) BUT NOW GO BACK AND FIX SOME LOGIC ISSUES (move around some functions and console.logs, maybe add some alerts)
 
@@ -47,11 +49,7 @@ const toggleModal = () => {
   welcomeModal.classList.add("closed");
 };
 
-// **** DEPRECATED ****
-// randomization was throwing some funky issues, so coded values inline instead.
-
-//
-
+// DEPRECATED. Ran into weird issues with returning values inconsistently.
 // // Randomization function. Built to work toward DRY code.
 // const randomization = (limit) => {
 //   Math.floor(Math.random() * limit);
@@ -215,7 +213,7 @@ const ussNova = {
       let healAmount = randomHealValue();
       this.hull += healAmount;
       console.log(
-        `Eureka! Our shields have been successfully repaired by ${healAmount}`
+        `Eureka! Our shields have been successfully repaired by ${healAmount} hit-points`
       );
     } else {
       console.log(
@@ -286,10 +284,11 @@ const healSelf = () => {
 const battleLossCheck = () => {
   if (currentTarget.hull > 0) {
     alienShips[0].attack(ussNova);
-    if (ussNova.hull <= 0) {
+    if (ussNova.hull <= 0 && currentTarget.hull > 0) {
       alert(`The ${ussNova.name} has been lost. Your watch has ended.`);
     }
-  } else {
+  }
+  if (currentTarget.hull <= 0) {
     console.log("It's our turn again, Captain. What shall we do?");
   }
 };
