@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Ubuntu+Mono&display=swap");
+
+body {
+  background-image: url(./images/galaxy.jpg);
+  width: 100vw;
+  font-size: 10px;
+  font-family: "Press Start 2P";
+}
+
+h1 {
+  text-align: center;
+  color: #ffffff;
+  font-family: "Press Start 2P";
+  font-size: 60px;
+  padding: 5px;
+  margin: 35px 0 100px 0;
+}
+
+.welcome-modal.closed {
+  display: none;
+}
+
+.welcome-modal {
+  background-color: #dfdfdf;
+  border: 10px solid #ececec;
+  padding: 30px;
+  width: 50vw;
+  min-width: 450px;
+  min-height: 350px;
+  max-height: 375px;
+  text-align: center;
+  border-radius: 8px;
+  position: fixed;
+  top: 55%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: block;
+}
+.flex-container {
+  position: relative;
+  text-align: center;
+}
+
+.controls {
+  align-items: center;
+}
+
+.controls button {
+  color: #ffffff;
+  background-color: #000000;
+  font-family: "Ubuntu Mono";
+  font-size: 1.25rem;
+  border-radius: 4px;
+  width: 15%;
+  min-width: 125px;
+  margin: 0px 10px 0px 20px;
+  padding: 25px;
+}
+
+.rules {
+  font-size: 1.35rem;
+}
+
+.get-started {
+  color: #ffffff;
+  font-size: 1.25rem;
+  background-color: #000000;
+  border-radius: 4px;
+  width: 35%;
+  height: 50px;
+  font-family: "Ubuntu Mono";
+}
